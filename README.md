@@ -1,1 +1,1 @@
-# <nlw/> Together 
+# NLW Together 
