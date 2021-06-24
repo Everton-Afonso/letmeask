@@ -5,6 +5,7 @@ import logoImg from "../assets/images/logo.svg";
 
 import { Button } from "../components/Button";
 import { RoomCode } from "../components/RoomCode";
+import { Question } from "../components/Question";
 
 import { useAuth } from "../hook/useAuth";
 
@@ -25,7 +26,7 @@ type FirebaseQuestion = Record<
   }
 >;
 
-type Question = {
+type QuestionType = {
   id: string;
   auth: {
     name: string;
@@ -44,7 +45,7 @@ export function Room() {
   const { user } = useAuth();
   const params = useParams<RoomParams>();
   const [newQuestion, setNewQuestion] = useState("");
-  const [questions, setQuestions] = useState<Question[]>([]);
+  const [questions, setQuestions] = useState<QuestionType[]>([]);
   const [title, setTitle] = useState("");
 
   const roomId = params.id;
@@ -110,7 +111,7 @@ export function Room() {
       <main className="content">
         <div className="room-title">
           <h1>Sala {title}</h1>
-          { questions.length > 0 && <span>{questions.length} pergunta(s)</span>}
+          {questions.length > 0 && <span>{questions.length} pergunta(s)</span>}
         </div>
         <form onSubmit={handleSendQuestion}>
           <textarea
@@ -136,7 +137,17 @@ export function Room() {
           </div>
         </form>
 
-        {JSON.stringify(questions)}
+        <div className="question-list">
+          {questions.map((question) => {
+            return (
+              <Question
+                key={question.id}
+                content={question.content}
+                auth={question.auth}
+              />
+            );
+          })}
+        </div>
       </main>
     </div>
   );
